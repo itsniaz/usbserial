@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.hardware.usb.UsbDevice;
 import android.hardware.usb.UsbDeviceConnection;
+import android.hardware.usb.UsbInterface;
 import android.hardware.usb.UsbManager;
 import android.os.Build;
 import android.util.Log;
@@ -70,6 +71,13 @@ public class UsbSerialPlugin implements FlutterPlugin, MethodCallHandler, EventC
                 Log.d(TAG, "ACTION_USB_ATTACHED");
                 if (m_EventSink != null) {
                     UsbDevice device = getUsbDeviceFromIntent(intent);
+
+                    for(int i=0; i<device.getInterfaceCount();i++) {
+                        UsbInterface usbInterface = device.getInterface(i);
+                        int x = usbInterface.getId();
+                    }
+
+
                     if (device != null) {
                         HashMap<String, Object> msg = serializeDevice(device);
                         msg.put("event", ACTION_USB_ATTACHED);
@@ -250,7 +258,7 @@ public class UsbSerialPlugin implements FlutterPlugin, MethodCallHandler, EventC
             dev.put("productName", device.getProductName());
             dev.put("interfaceCount", device.getInterfaceCount());
             dev.put("class", device.getDeviceClass());
-            dev.put("subclass", device.getDeviceClass());
+            dev.put("subClass", device.getDeviceSubclass());
             dev.put("deviceName", device.getDeviceName());
             /* if the app targets SDK >= android.os.Build.VERSION_CODES.Q and the app does not have permission to read from the device. */
             try {

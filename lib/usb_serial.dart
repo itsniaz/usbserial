@@ -307,14 +307,20 @@ class UsbDevice {
   /// The number of interfaces on this UsbPort
   final int? interfaceCount;
 
+  final int? deviceClass;
+
+  final int? deviceSubclass;
+
   UsbDevice(
       this.deviceName, this.vid, this.pid, this.productName,
-      this.manufacturerName, this.deviceId, this.serial, this.interfaceCount);
+      this.manufacturerName, this.deviceId, this.serial, this.interfaceCount, this.deviceClass, this.deviceSubclass);
 
   static UsbDevice fromJSON(dynamic json) {
     return UsbDevice(
         json["deviceName"], json["vid"], json["pid"], json["productName"],
-        json["manufacturerName"], json["deviceId"], json["serialNumber"], json["interfaceCount"]);
+        json["manufacturerName"], json["deviceId"], json["serialNumber"], json["interfaceCount"],
+        json["class"], json["subClass"]
+    );
   }
 
   @override
